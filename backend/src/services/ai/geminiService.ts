@@ -69,7 +69,7 @@ export const geminiService = {
     }
 
     try {
-      const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const response = await model.generateContent({
         contents: [
           { role: 'user', parts: [{ text: `${systemPrompt}\nUser input: "${prompt}"` }] }
@@ -129,7 +129,7 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
     }
 
     try {
-      const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const response = await model.generateContent({
         contents: [
           { role: 'user', parts: [{ text: `${prompt}\nContext details:\n${contextStr}` }] }
@@ -197,7 +197,7 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
     }
 
     try {
-      const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const response = await model.generateContent({
         contents: [{ role: 'user', parts: [{ text: prompt }] }]
       });
@@ -256,7 +256,7 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
     }
 
     try {
-      const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const response = await model.generateContent({
         contents: [{ role: 'user', parts: [{ text: prompt }] }]
       });
@@ -291,7 +291,7 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
     }
 
     try {
-      const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const response = await model.generateContent({
         contents: [{ role: 'user', parts: [{ text: prompt }] }]
       });
@@ -408,7 +408,7 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
     try {
       // Connect to Gemini live model with function calling declaration
       const model = genAI!.getGenerativeModel({
-        model: 'gemini-2.0-flash',
+        model: 'gemini-1.5-flash',
         tools: [{ functionDeclarations: agentToolDeclarations } as any]
       });
 
@@ -532,7 +532,7 @@ export async function scanImageForTasksMethod(imageBase64: string, mimeType: str
   }
 
   try {
-    const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const result = await model.generateContent([
       {
         inlineData: {
@@ -585,7 +585,7 @@ export async function generateTimeTravelScenariosMethod(tasks: any[], horizonDay
   }
 
   try {
-    const model = genAI!.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI!.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const prompt = `You are a deadline prediction AI. Analyze these ${active.length} active tasks and simulate 3 realistic scenarios for the next ${horizonDays} days from ${new Date().toISOString()}.
 
 Tasks: ${JSON.stringify(active.map((t: any) => ({
