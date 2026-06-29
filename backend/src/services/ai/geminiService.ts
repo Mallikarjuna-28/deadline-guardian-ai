@@ -470,9 +470,8 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
       }
       sendEvent('done', {});
     } catch (error: any) {
-      console.error('Gemini Stream error:', error);
-      sendEvent('content', `I ran into an issue handling that: ${error.message}. Please let me know how you'd like to proceed!`);
-      sendEvent('done', {});
+      console.error('Gemini Stream error, falling back to local flow:', error);
+      await runLocalAgentFallback(error.message);
     }
   },
 
