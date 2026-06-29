@@ -57,12 +57,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       document.documentElement.classList.remove('dark');
     }
     
-    // Auto-migrate or clear the old hardcoded dev-user-123 token
+    // Auto-migrate or clear the old hardcoded dev-user-123 token or mock tokens in production
     const storedToken = localStorage.getItem('dg_token');
-    if (storedToken === 'dev-user-123') {
+    const isMock = !import.meta.env.VITE_FIREBASE_API_KEY;
+    if (storedToken === 'dev-user-123' || (!isMock && storedToken && storedToken.startsWith('mock_user__'))) {
       localStorage.removeItem('dg_token');
-      set({ token: null, user: null });
-    } else {
+      localStorage.removeItem('dg_google_access_token');
+      set({ token: null, googleAccessToken: null, user: null });
+    } else if (storedToken) {
       get().fetchProfile();
     }
   },
