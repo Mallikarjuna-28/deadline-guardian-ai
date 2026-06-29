@@ -49,39 +49,77 @@
 
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #F8F7FF !important;
-    color: #1A1635 !important;
     -webkit-font-smoothing: antialiased;
     @apply transition-colors duration-300;
+  }
+
+  html:not(.dark) body {
+    background-color: #F8F7FF !important;
+    color: #1A1635 !important;
+  }
+
+  html.dark body {
+    background-color: #0A0A1A !important;
+    color: #F3F4F6 !important;
   }
 }
 
 /* Glassmorphism clean light custom classes */
-.glass {
-  background: #FFFFFF !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid #E2DFFF !important;
-  box-shadow: 0 2px 12px rgba(91, 76, 245, 0.06) !important;
-  color: #1A1635 !important;
+html:not(.dark) {
+  .glass {
+    background: #FFFFFF !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid #E2DFFF !important;
+    box-shadow: 0 2px 12px rgba(91, 76, 245, 0.06) !important;
+    color: #1A1635 !important;
+  }
+
+  .glass-premium {
+    background: #FFFFFF !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid #C5BFFF !important;
+    box-shadow: 0 10px 40px -10px rgba(91, 76, 245, 0.12) !important;
+    color: #1A1635 !important;
+  }
+
+  .glass-light {
+    background: #F0EFFF !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid #E2DFFF !important;
+    box-shadow: 0 8px 32px 0 rgba(91, 76, 245, 0.04) !important;
+    color: #1A1635 !important;
+  }
 }
 
-.glass-premium {
-  background: #FFFFFF !important;
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  border: 1px solid #C5BFFF !important;
-  box-shadow: 0 10px 40px -10px rgba(91, 76, 245, 0.12) !important;
-  color: #1A1635 !important;
-}
+html.dark {
+  .glass {
+    background: rgba(13, 13, 35, 0.65) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2) !important;
+    color: #F3F4F6 !important;
+  }
 
-.glass-light {
-  background: #F0EFFF !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid #E2DFFF !important;
-  box-shadow: 0 8px 32px 0 rgba(91, 76, 245, 0.04) !important;
-  color: #1A1635 !important;
+  .glass-premium {
+    background: rgba(15, 15, 38, 0.8) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
+    color: #F3F4F6 !important;
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    color: #E5E7EB !important;
+  }
 }
 
 /* Animated outline flow */
@@ -105,29 +143,52 @@
 }
 
 /* Animated gradient text helper */
-.gradient-text {
+html:not(.dark) .gradient-text {
   background: linear-gradient(135deg, #1A1635 0%, #5B4CF5 50%, #7C6FF7 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
 
+html.dark .gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #A5B4FC 50%, #818CF8 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
 /* Custom Scrollbars — light and subtle */
+html:not(.dark) {
+  ::-webkit-scrollbar-track {
+    background: #F0EFFF;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #C5BFFF;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5B4CF5;
+  }
+}
+
+html.dark {
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6366F1;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #F0EFFF;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #C5BFFF;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #5B4CF5;
 }
 
 /* Pulse Glow Keyframes */
@@ -160,73 +221,75 @@
   }
 }
 
-/* Global utility overrides to convert dark classes to clean modern light palette */
+/* Global utility overrides to convert dark classes to clean modern light palette (Only in light theme) */
 @layer utilities {
-  .bg-\[\#0A0A1A\], .bg-\[\#0a0a1a\] {
-    background-color: #F8F7FF !important;
-  }
-  .bg-\[\#0f0f1a\], .bg-\[\#0F0F1A\] {
-    background-color: #FFFFFF !important;
-  }
-  .bg-\[\#1a1a2e\] {
-    background-color: #FFFFFF !important;
-  }
-  .bg-\[\#12121a\] {
-    background-color: #FFFFFF !important;
-  }
-  .bg-\[\#070714\] {
-    background-color: #FFFFFF !important;
-  }
-  .bg-black\/40 {
-    background-color: #FFFFFF !important;
-  }
-  .bg-white\/5 {
-    background-color: #F0EFFF !important;
-    color: #1A1635 !important;
-  }
-  .bg-white\/10 {
-    background-color: #E8E6FF !important;
-    color: #1A1635 !important;
-  }
-  .bg-white\/80 {
-    background-color: #FFFFFF !important;
-  }
-  .border-white\/5, .border-white\/10 {
-    border-color: #E2DFFF !important;
-  }
-  .text-gray-100, .text-gray-200 {
-    color: #1A1635 !important;
-  }
-  .text-gray-300, .text-gray-400 {
-    color: #4A4568 !important;
-  }
-  .text-gray-500, .text-gray-600 {
-    color: #8B87A8 !important;
-  }
-  .text-indigo-200, .text-indigo-300, .text-indigo-400 {
-    color: #5B4CF5 !important;
-  }
-  .border-indigo-950\/40, .border-indigo-950\/20 {
-    border-color: #E2DFFF !important;
-  }
-  .text-brand-violet {
-    color: #7C6FF7 !important;
-  }
-  
-  /* Input/Select form classes overrides */
-  input.bg-black\/40, textarea.bg-black\/40, select.bg-black\/40 {
-    background-color: #FFFFFF !important;
-    border-color: #E2DFFF !important;
-    color: #1A1635 !important;
-  }
-  input.bg-black\/40:focus, textarea.bg-black\/40:focus, select.bg-black\/40:focus {
-    border-color: #5B4CF5 !important;
-    box-shadow: 0 0 0 2px rgba(91, 76, 245, 0.1) !important;
-  }
-  
-  /* Checkbox input tweak */
-  input[type="checkbox"].bg-black\/40 {
-    background-color: #FFFFFF !important;
-    border-color: #C5BFFF !important;
+  html:not(.dark) {
+    .bg-\[\#0A0A1A\], .bg-\[\#0a0a1a\] {
+      background-color: #F8F7FF !important;
+    }
+    .bg-\[\#0f0f1a\], .bg-\[\#0F0F1A\] {
+      background-color: #FFFFFF !important;
+    }
+    .bg-\[\#1a1a2e\] {
+      background-color: #FFFFFF !important;
+    }
+    .bg-\[\#12121a\] {
+      background-color: #FFFFFF !important;
+    }
+    .bg-\[\#070714\] {
+      background-color: #FFFFFF !important;
+    }
+    .bg-black\/40 {
+      background-color: #FFFFFF !important;
+    }
+    .bg-white\/5 {
+      background-color: #F0EFFF !important;
+      color: #1A1635 !important;
+    }
+    .bg-white\/10 {
+      background-color: #E8E6FF !important;
+      color: #1A1635 !important;
+    }
+    .bg-white\/80 {
+      background-color: #FFFFFF !important;
+    }
+    .border-white\/5, .border-white\/10 {
+      border-color: #E2DFFF !important;
+    }
+    .text-gray-100, .text-gray-200 {
+      color: #1A1635 !important;
+    }
+    .text-gray-300, .text-gray-400 {
+      color: #4A4568 !important;
+    }
+    .text-gray-500, .text-gray-600 {
+      color: #8B87A8 !important;
+    }
+    .text-indigo-200, .text-indigo-300, .text-indigo-400 {
+      color: #5B4CF5 !important;
+    }
+    .border-indigo-950\/40, .border-indigo-950\/20 {
+      border-color: #E2DFFF !important;
+    }
+    .text-brand-violet {
+      color: #7C6FF7 !important;
+    }
+    
+    /* Input/Select form classes overrides */
+    input.bg-black\/40, textarea.bg-black\/40, select.bg-black\/40 {
+      background-color: #FFFFFF !important;
+      border-color: #E2DFFF !important;
+      color: #1A1635 !important;
+    }
+    input.bg-black\/40:focus, textarea.bg-black\/40:focus, select.bg-black\/40:focus {
+      border-color: #5B4CF5 !important;
+      box-shadow: 0 0 0 2px rgba(91, 76, 245, 0.1) !important;
+    }
+    
+    /* Checkbox input tweak */
+    input[type="checkbox"].bg-black\/40 {
+      background-color: #FFFFFF !important;
+      border-color: #C5BFFF !important;
+    }
   }
 }
