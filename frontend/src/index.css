@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Backgrounds */
+    --bg-base:        #F8F7FF;   /* very soft lavender white — main page bg */
+    --bg-surface:     #FFFFFF;   /* pure white — cards, modals */
+    --bg-surface-2:   #F0EFFF;   /* light lavender — hover states, subtle sections */
+    --bg-surface-3:   #E8E6FF;   /* slightly deeper lavender — active states */
+
+    /* Brand */
+    --brand:          #5B4CF5;   /* rich indigo purple — primary buttons, links */
+    --brand-hover:    #4A3DE0;   /* deeper on hover */
+    --brand-light:    #EDE9FF;   /* very light indigo — tag backgrounds, chips */
+    --brand-text:     #5B4CF5;   /* indigo text on light backgrounds */
+
+    /* Accent */
+    --accent:         #7C6FF7;   /* medium purple — secondary highlights */
+    --accent-light:   #F0EEFF;   /* very light accent bg */
+
+    /* Text */
+    --text-primary:   #1A1635;   /* very dark indigo — headings, main text */
+    --text-secondary: #4A4568;   /* medium dark purple-grey — body text */
+    --text-muted:     #8B87A8;   /* soft muted purple — placeholders, labels */
+    --text-on-brand:  #FFFFFF;   /* white text on brand buttons */
+
+    /* Borders */
+    --border:         #E2DFFF;   /* soft lavender border */
+    --border-strong:  #C5BFFF;   /* slightly stronger border on focus */
+
+    /* Semantic */
+    --success:        #059669;   /* green */
+    --success-bg:     #ECFDF5;   /* light green background */
+    --warning:        #D97706;   /* amber */
+    --warning-bg:     #FFFBEB;   /* light amber background */
+    --danger:         #DC2626;   /* red */
+    --danger-bg:      #FEF2F2;   /* light red background */
+    --info:           #2563EB;   /* blue */
+    --info-bg:        #EFF6FF;   /* light blue background */
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #F8F7FF !important;
+    color: #1A1635 !important;
+    -webkit-font-smoothing: antialiased;
+    @apply transition-colors duration-300;
+  }
+}
+
+/* Glassmorphism clean light custom classes */
+.glass {
+  background: #FFFFFF !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid #E2DFFF !important;
+  box-shadow: 0 2px 12px rgba(91, 76, 245, 0.06) !important;
+  color: #1A1635 !important;
+}
+
+.glass-premium {
+  background: #FFFFFF !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid #C5BFFF !important;
+  box-shadow: 0 10px 40px -10px rgba(91, 76, 245, 0.12) !important;
+  color: #1A1635 !important;
+}
+
+.glass-light {
+  background: #F0EFFF !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid #E2DFFF !important;
+  box-shadow: 0 8px 32px 0 rgba(91, 76, 245, 0.04) !important;
+  color: #1A1635 !important;
+}
+
+/* Animated outline flow */
+.glow-card {
+  position: relative;
+}
+
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #5B4CF5, #7C6FF7, #5B4CF5);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glow-card:hover::after {
+  opacity: 0.3;
+}
+
+/* Animated gradient text helper */
+.gradient-text {
+  background: linear-gradient(135deg, #1A1635 0%, #5B4CF5 50%, #7C6FF7 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Custom Scrollbars — light and subtle */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F0EFFF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C5BFFF;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5B4CF5;
+}
+
+/* Pulse Glow Keyframes */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(91, 76, 245, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(91, 76, 245, 0.2);
+  }
+}
+
+.pulse-glow-violet {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+/* Skeleton Loading Effect */
+.skeleton {
+  background: linear-gradient(90deg, rgba(91, 76, 245, 0.03) 25%, rgba(91, 76, 245, 0.08) 37%, rgba(91, 76, 245, 0.03) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* Global utility overrides to convert dark classes to clean modern light palette */
+@layer utilities {
+  .bg-\[\#0A0A1A\], .bg-\[\#0a0a1a\] {
+    background-color: #F8F7FF !important;
+  }
+  .bg-\[\#0f0f1a\], .bg-\[\#0F0F1A\] {
+    background-color: #FFFFFF !important;
+  }
+  .bg-\[\#1a1a2e\] {
+    background-color: #FFFFFF !important;
+  }
+  .bg-\[\#12121a\] {
+    background-color: #FFFFFF !important;
+  }
+  .bg-\[\#070714\] {
+    background-color: #FFFFFF !important;
+  }
+  .bg-black\/40 {
+    background-color: #FFFFFF !important;
+  }
+  .bg-white\/5 {
+    background-color: #F0EFFF !important;
+    color: #1A1635 !important;
+  }
+  .bg-white\/10 {
+    background-color: #E8E6FF !important;
+    color: #1A1635 !important;
+  }
+  .bg-white\/80 {
+    background-color: #FFFFFF !important;
+  }
+  .border-white\/5, .border-white\/10 {
+    border-color: #E2DFFF !important;
+  }
+  .text-gray-100, .text-gray-200 {
+    color: #1A1635 !important;
+  }
+  .text-gray-300, .text-gray-400 {
+    color: #4A4568 !important;
+  }
+  .text-gray-500, .text-gray-600 {
+    color: #8B87A8 !important;
+  }
+  .text-indigo-200, .text-indigo-300, .text-indigo-400 {
+    color: #5B4CF5 !important;
+  }
+  .border-indigo-950\/40, .border-indigo-950\/20 {
+    border-color: #E2DFFF !important;
+  }
+  .text-brand-violet {
+    color: #7C6FF7 !important;
+  }
+  
+  /* Input/Select form classes overrides */
+  input.bg-black\/40, textarea.bg-black\/40, select.bg-black\/40 {
+    background-color: #FFFFFF !important;
+    border-color: #E2DFFF !important;
+    color: #1A1635 !important;
+  }
+  input.bg-black\/40:focus, textarea.bg-black\/40:focus, select.bg-black\/40:focus {
+    border-color: #5B4CF5 !important;
+    box-shadow: 0 0 0 2px rgba(91, 76, 245, 0.1) !important;
+  }
+  
+  /* Checkbox input tweak */
+  input[type="checkbox"].bg-black\/40 {
+    background-color: #FFFFFF !important;
+    border-color: #C5BFFF !important;
+  }
+}
