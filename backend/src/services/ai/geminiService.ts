@@ -393,10 +393,9 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
     }
 
     try {
-      // Connect to Gemini live model using stable v1 endpoint (without tool schema, preventing v1 400 Bad Request)
       const model = genAI!.getGenerativeModel({
         model: 'gemini-1.5-flash'
-      }, { apiVersion: 'v1' });
+      });
 
       // Prepare Chat sessions
       let formattedHistory = history.map(h => ({
