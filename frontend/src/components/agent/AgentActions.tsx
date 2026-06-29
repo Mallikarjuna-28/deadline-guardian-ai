@@ -70,7 +70,7 @@ export function AgentActions({
               style={{ animationDelay: `${i * 80}ms` }}
             >
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white">{action.label}</p>
+                <p className="text-sm font-medium text-gray-200">{action.label}</p>
                 <p className="text-xs text-gray-400 mt-0.5">
                   <span className="text-gray-500">Reason: </span>{action.reason}
                 </p>

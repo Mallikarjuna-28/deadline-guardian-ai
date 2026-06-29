@@ -275,6 +275,28 @@ html.dark {
       color: #7C6FF7 !important;
     }
     
+    /* Ensure elements inside dark-background components retain their readability */
+    .bg-indigo-900,
+    .bg-indigo-950,
+    .bg-indigo-950\/50,
+    .bg-indigo-950\/40,
+    .bg-indigo-950\/20,
+    .bg-green-900\/20,
+    .bg-gradient-to-r.from-indigo-900\/40 {
+      .text-gray-100, .text-gray-200 {
+        color: #F3F4F6 !important;
+      }
+      .text-gray-300, .text-gray-400 {
+        color: #D1D5DB !important;
+      }
+      .text-gray-500, .text-gray-600 {
+        color: #9CA3AF !important;
+      }
+      .text-indigo-200, .text-indigo-300, .text-indigo-400 {
+        color: #C7D2FE !important;
+      }
+    }
+    
     /* Input/Select form classes overrides */
     input.bg-black\/40, textarea.bg-black\/40, select.bg-black\/40 {
       background-color: #FFFFFF !important;
@@ -290,6 +312,17 @@ html.dark {
     input[type="checkbox"].bg-black\/40 {
       background-color: #FFFFFF !important;
       border-color: #C5BFFF !important;
+    }
+
+    /* Enrich button hover states to avoid flat black/white appearance */
+    .hover\:text-gray-200:hover, 
+    .hover\:text-gray-300:hover, 
+    .hover\:text-indigo-300:hover {
+      color: #5B4CF5 !important;
+    }
+    .hover\:bg-white\/5:hover, 
+    .hover\:bg-white\/10:hover {
+      background-color: #EDE9FF !important;
     }
   }
 }

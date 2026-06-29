@@ -139,7 +139,7 @@ export function TimeTravelModal({ tasks }: { tasks: Task[] }) {
                         <div className="text-3xl mb-2">{meta.emoji}</div>
                         <p className="text-sm font-bold mb-1" style={{ color: meta.color }}>{meta.label}</p>
                         <div className="flex items-baseline gap-1 mb-1">
-                          <span className="text-2xl font-bold text-white">{s.completed}</span>
+                          <span className="text-2xl font-bold text-gray-200">{s.completed}</span>
                           <span className="text-sm text-gray-400">/ {s.completed + s.missed} done</span>
                         </div>
                         {s.missed > 0 && (

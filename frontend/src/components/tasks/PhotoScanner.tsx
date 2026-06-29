@@ -140,7 +140,7 @@ export function PhotoScanner({ onTasksExtracted }: { onTasksExtracted: (tasks: S
                       {selected.has(i) && <span className="text-white text-[9px] font-bold">✓</span>}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">{task.title}</p>
+                      <p className="text-sm font-medium text-gray-200 truncate">{task.title}</p>
                       {task.deadline && (
                         <p className="text-xs text-gray-400">📅 {new Date(task.deadline).toLocaleDateString()}</p>
                       )}
