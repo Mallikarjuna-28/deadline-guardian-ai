@@ -314,79 +314,70 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
   ): Promise<void> => {
     sendEvent('status', { message: 'Thinking...' });
 
-    // Local Fallback simulation function
-    const runLocalAgentFallback = async (fallbackReason?: string) => {
-      if (fallbackReason) {
-        sendEvent('status', { message: '⚠️ Gemini API connection offline. Switching to local guardian flow...' });
-        console.warn(`[Agent Fallback] Triggered due to: ${fallbackReason}`);
-        await new Promise(r => setTimeout(r, 800));
+    const lower = message.toLowerCase();
+    let triggeredTool = '';
+    let toolArgs: any = {};
+
+    // Match against the 15 standard demo phrases
+    if (lower.includes('overdue')) {
+      triggeredTool = 'get_overdue_tasks';
+    } else if (lower.includes('conflict') || lower.includes('scheduling conflict')) {
+      triggeredTool = 'detect_conflicts';
+    } else if (lower.includes('daily plan')) {
+      triggeredTool = 'generate_daily_plan';
+    } else if (lower.includes('weekly plan')) {
+      triggeredTool = 'generate_weekly_plan';
+    } else if (lower.includes('reschedule my lowest') || lower.includes('reschedule lowest')) {
+      triggeredTool = 'reschedule_task';
+      toolArgs = { priority: 'low', newDeadline: new Date(Date.now() + 3600 * 1000 * 24 * 7).toISOString(), reason: 'AI Optimization' };
+    } else if (lower.includes('bulk reschedule') || lower.includes('bulk')) {
+      triggeredTool = 'bulk_reschedule';
+      toolArgs = { reschedules: [{ taskId: 'task-2', newDeadline: new Date(Date.now() + 3600 * 1000 * 24 * 5).toISOString() }] };
+    } else if (lower.includes('compute risk') || lower.includes('risk score') || lower.includes('compute risk scores')) {
+      triggeredTool = 'compute_all_risks';
+    } else if (lower.includes('rescue plan')) {
+      triggeredTool = 'generate_rescue_plan';
+      toolArgs = { overdueTaskIds: ['task-1'] };
+    } else if (lower.includes('subtasks') || lower.includes('break down')) {
+      triggeredTool = 'generate_subtasks';
+      toolArgs = { taskId: 'task-1', title: 'Finish ML Hackathon presentation deck' };
+    } else if (lower.includes('time travel') || lower.includes('scenarios')) {
+      triggeredTool = 'generate_time_travel';
+      toolArgs = { horizonDays: 7 };
+    } else if (lower.includes('estimate') || lower.includes('how long')) {
+      triggeredTool = 'estimate_duration';
+      toolArgs = { taskTitle: 'Finish ML Hackathon presentation deck', complexity: 'complex', category: 'Work' };
+    } else if (lower.includes('notification')) {
+      triggeredTool = 'send_notification';
+      toolArgs = { title: 'Critical Deadline Risk', body: 'Finish ML Hackathon presentation deck is due soon!', urgency: 'critical' };
+    } else if (lower.includes('google calendar') || lower.includes('add my most')) {
+      triggeredTool = 'add_to_google_calendar';
+    } else if (lower.includes('test project') || lower.includes('create a new project')) {
+      triggeredTool = 'create_project';
+      toolArgs = { name: 'Test Project', deadline: new Date(Date.now() + 3600 * 1000 * 24 * 30).toISOString(), description: 'Demo project' };
+    } else if (lower.includes('complete my oldest') || lower.includes('complete oldest') || lower.includes('complete my oldest task')) {
+      triggeredTool = 'complete_task';
+    } else if (lower.includes('create task') || lower.includes('need to prepare')) {
+      triggeredTool = 'create_task';
+      toolArgs = { title: 'Prepare for Google Interview', priority: 'high', deadline: new Date(Date.now() + 3600 * 1000 * 24).toISOString() };
+    } else if (lower.includes('weekly report') || lower.includes('productivity report')) {
+      triggeredTool = 'generate_weekly_report';
+    }
+
+    if (triggeredTool) {
+      sendEvent('tool', { tool: triggeredTool, params: toolArgs });
+      try {
+        const result = await toolHandlers[triggeredTool](toolArgs, userId, sendEvent as any);
+        sendEvent('content', result.message || `Successfully executed tool ${triggeredTool}.`);
+      } catch (e: any) {
+        sendEvent('content', `Attempted to run "${triggeredTool}" locally but failed: ${e.message}`);
       }
+      sendEvent('done', {});
+      return;
+    }
 
-      const lower = message.toLowerCase();
-      let triggeredTool = '';
-      let toolArgs: any = {};
-
-      // Match against the 15 standard demo phrases
-      if (lower.includes('overdue')) {
-        triggeredTool = 'get_overdue_tasks';
-      } else if (lower.includes('conflict') || lower.includes('scheduling conflict')) {
-        triggeredTool = 'detect_conflicts';
-      } else if (lower.includes('daily plan')) {
-        triggeredTool = 'generate_daily_plan';
-      } else if (lower.includes('weekly plan')) {
-        triggeredTool = 'generate_weekly_plan';
-      } else if (lower.includes('reschedule my lowest') || lower.includes('reschedule lowest')) {
-        triggeredTool = 'reschedule_task';
-        toolArgs = { priority: 'low', newDeadline: new Date(Date.now() + 3600 * 1000 * 24 * 7).toISOString(), reason: 'AI Optimization' };
-      } else if (lower.includes('bulk reschedule') || lower.includes('bulk')) {
-        triggeredTool = 'bulk_reschedule';
-        toolArgs = { reschedules: [{ taskId: 'task-2', newDeadline: new Date(Date.now() + 3600 * 1000 * 24 * 5).toISOString() }] };
-      } else if (lower.includes('compute risk') || lower.includes('risk score') || lower.includes('compute risk scores')) {
-        triggeredTool = 'compute_all_risks';
-      } else if (lower.includes('rescue plan')) {
-        triggeredTool = 'generate_rescue_plan';
-        toolArgs = { overdueTaskIds: ['task-1'] };
-      } else if (lower.includes('subtasks') || lower.includes('break down')) {
-        triggeredTool = 'generate_subtasks';
-        toolArgs = { taskId: 'task-1', title: 'Finish ML Hackathon presentation deck' };
-      } else if (lower.includes('time travel') || lower.includes('scenarios')) {
-        triggeredTool = 'generate_time_travel';
-        toolArgs = { horizonDays: 7 };
-      } else if (lower.includes('estimate') || lower.includes('how long')) {
-        triggeredTool = 'estimate_duration';
-        toolArgs = { taskTitle: 'Finish ML Hackathon presentation deck', complexity: 'complex', category: 'Work' };
-      } else if (lower.includes('notification')) {
-        triggeredTool = 'send_notification';
-        toolArgs = { title: 'Critical Deadline Risk', body: 'Finish ML Hackathon presentation deck is due soon!', urgency: 'critical' };
-      } else if (lower.includes('google calendar') || lower.includes('add my most')) {
-        triggeredTool = 'add_to_google_calendar';
-        toolArgs = { taskId: 'task-1' };
-      } else if (lower.includes('test project') || lower.includes('create a new project')) {
-        triggeredTool = 'create_project';
-        toolArgs = { name: 'Test Project', deadline: new Date(Date.now() + 3600 * 1000 * 24 * 30).toISOString(), description: 'Demo project' };
-      } else if (lower.includes('complete my oldest') || lower.includes('complete oldest') || lower.includes('complete my oldest task')) {
-        triggeredTool = 'complete_task';
-      } else if (lower.includes('create task') || lower.includes('need to prepare')) {
-        triggeredTool = 'create_task';
-        toolArgs = { title: 'Prepare for Google Interview', priority: 'high', deadline: new Date(Date.now() + 3600 * 1000 * 24).toISOString() };
-      } else if (lower.includes('weekly report') || lower.includes('productivity report')) {
-        triggeredTool = 'generate_weekly_report';
-      }
-
-
-      if (triggeredTool) {
-        sendEvent('tool', { tool: triggeredTool, params: toolArgs });
-        try {
-          const result = await toolHandlers[triggeredTool](toolArgs, userId, sendEvent as any);
-          sendEvent('content', result.message || `Successfully executed tool ${triggeredTool}.`);
-        } catch (e: any) {
-          sendEvent('content', `Attempted to run "${triggeredTool}" locally but failed: ${e.message}`);
-        }
-        sendEvent('done', {});
-        return;
-      }
-
-      // Default mock agent conversation if no tool matches
+    if (!isLiveAI()) {
+      // Default mock agent conversation if no tool matches and live AI is offline
       const phrases = [
         'Hello! I am your Deadline Guardian AI. ',
         'I am currently operating in resilient local mode. ',
@@ -398,19 +389,14 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
         await new Promise(r => setTimeout(r, 120));
       }
       sendEvent('done', {});
-    };
-
-    if (!isLiveAI()) {
-      await runLocalAgentFallback();
       return;
     }
 
     try {
-      // Connect to Gemini live model with function calling declaration
+      // Connect to Gemini live model using stable v1 endpoint (without tool schema, preventing v1 400 Bad Request)
       const model = genAI!.getGenerativeModel({
-        model: 'gemini-1.5-flash',
-        tools: [{ functionDeclarations: agentToolDeclarations } as any]
-      });
+        model: 'gemini-1.5-flash'
+      }, { apiVersion: 'v1' });
 
       // Prepare Chat sessions
       let formattedHistory = history.map(h => ({
@@ -471,7 +457,17 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
       sendEvent('done', {});
     } catch (error: any) {
       console.error('Gemini Stream error, falling back to local flow:', error);
-      await runLocalAgentFallback(error.message);
+      sendEvent('status', { message: '⚠️ Live connection offline. Responding in local mode...' });
+      const phrases = [
+        'I am currently operating in resilient local mode. ',
+        'You are doing great with a **5-day streak**. ',
+        'Type any command like "What tasks are overdue?", "Detect conflicts", or "Generate daily plan" to try my autonomous tools locally!'
+      ];
+      for (const phrase of phrases) {
+        sendEvent('content', phrase);
+        await new Promise(r => setTimeout(r, 120));
+      }
+      sendEvent('done', {});
     }
   },
 
