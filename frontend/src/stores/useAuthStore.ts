@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   loading: false,
   darkMode: localStorage.getItem('dg_theme') === 'dark',
-  apiUrl: 'http://localhost:8080',
+  apiUrl: import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080',
 
   initialize: () => {
     const { darkMode } = get();
