@@ -9,7 +9,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.11.0",
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.5",
     "deadline-guardian-ai-root": "file:..",
     "dotenv": "^16.4.5",
