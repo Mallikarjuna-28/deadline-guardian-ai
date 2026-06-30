@@ -307,7 +307,7 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
           )}
         </header>
 
-        <section className="flex-1 p-4 sm:p-6 relative overflow-hidden pb-20 lg:pb-6">
+        <section className="flex-1 p-4 sm:p-6 relative pb-20 lg:pb-6">
           <div className="absolute top-[-10%] left-[20%] w-[35vw] h-[35vh] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none z-0" />
           <div className="absolute bottom-[-10%] right-[10%] w-[30vw] h-[30vh] bg-violet-600/5 rounded-full blur-[130px] pointer-events-none z-0" />
           <div className="relative z-10">
