@@ -455,16 +455,33 @@ As a morning person, your peak focus hours start now. I've cleared your calendar
       }
       sendEvent('done', {});
     } catch (error: any) {
-      console.error('Gemini Stream error, falling back to local flow:', error);
+      console.error('Gemini Stream error, falling back to keyless AI proxy:', error);
       sendEvent('status', { message: '⚠️ Live connection offline. Responding in local mode...' });
-      const phrases = [
-        'I am currently operating in resilient local mode. ',
-        'You are doing great with a **5-day streak**. ',
-        'Type any command like "What tasks are overdue?", "Detect conflicts", or "Generate daily plan" to try my autonomous tools locally!'
-      ];
-      for (const phrase of phrases) {
-        sendEvent('content', phrase);
-        await new Promise(r => setTimeout(r, 120));
+      try {
+        const res = await fetch(`https://text.pollinations.ai/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [
+              ...history.map(h => ({
+                role: h.role === 'model' ? 'assistant' : (h.role as any === 'assistant' ? 'assistant' : 'user'),
+                content: h.parts
+              })),
+              { role: 'user', content: message }
+            ]
+          })
+        });
+        const text = await res.text();
+        
+        // Stream the text back word-by-word to simulate dynamic typing
+        const words = text.split(' ');
+        for (const word of words) {
+          sendEvent('content', word + ' ');
+          await new Promise(r => setTimeout(r, 30));
+        }
+      } catch (fallbackError: any) {
+        console.error('Keyless AI proxy failed:', fallbackError);
+        sendEvent('content', 'Sorry, I am currently experiencing connection difficulties. Please try again in a moment.');
       }
       sendEvent('done', {});
     }
