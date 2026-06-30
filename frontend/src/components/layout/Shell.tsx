@@ -72,7 +72,9 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
               <ShieldAlert className="w-6 h-6 animate-pulse" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-lg tracking-wide gradient-text bg-gradient-to-r from-indigo-200 via-indigo-100 to-indigo-300">
+              <h1 className={`font-display font-bold text-lg tracking-wide gradient-text bg-gradient-to-r ${
+                darkMode ? 'from-indigo-200 via-indigo-100 to-indigo-300' : 'from-[#5B4CF5] via-[#7C6FF7] to-[#9A8FFF]'
+              }`}>
                 Guardian AI
               </h1>
               <span className="text-[10px] text-brand-violet uppercase tracking-wider font-semibold">
@@ -92,12 +94,16 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
                   onClick={() => navigate(item.id)}
                   className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-brand-indigo/25 to-brand-violet/10 text-indigo-300 font-medium border-l-2 border-brand-indigo'
-                      : 'hover:bg-white/5 text-gray-400 hover:text-gray-200'
+                      ? (darkMode
+                          ? 'bg-gradient-to-r from-brand-indigo/25 to-brand-violet/10 text-indigo-300 font-medium border-l-2 border-brand-indigo'
+                          : 'bg-[#EDE9FF] text-[#5B4CF5] font-semibold border-l-2 border-[#5B4CF5]')
+                      : (darkMode
+                          ? 'hover:bg-white/5 text-gray-400 hover:text-gray-200'
+                          : 'hover:bg-[#F0EFFF] text-[#4A4568] hover:text-[#1A1635]')
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-gray-500'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? (darkMode ? 'text-indigo-400' : 'text-[#5B4CF5]') : 'text-[#8B87A8]'}`} />
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
@@ -120,8 +126,12 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
         <div className="space-y-4 pt-4 border-t border-white/5">
           {user && (
             <div
-              onClick={() => navigate('profile')}
-              className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-2 cursor-pointer hover:bg-white/10 transition-colors"
+               onClick={() => navigate('profile')}
+               className={`p-3 rounded-xl border space-y-2 cursor-pointer transition-colors ${
+                 darkMode
+                   ? 'bg-white/5 border-white/5 hover:bg-white/10'
+                   : 'bg-[#F8F7FF] border-[#E2DFFF] hover:bg-[#F0EFFF]'
+               }`}
             >
               <div className="flex items-center gap-3">
                 <img
@@ -130,9 +140,11 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
                   className="w-10 h-10 rounded-full border border-indigo-400/40 object-cover"
                 />
                 <div className="overflow-hidden">
-                  <h4 className="text-xs font-semibold truncate text-gray-200">{user.displayName}</h4>
+                  <h4 className={`text-xs font-semibold truncate ${darkMode ? 'text-gray-200' : 'text-[#1A1635]'}`}>{user.displayName}</h4>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="text-[10px] font-bold px-1 py-0.2 bg-indigo-500/20 text-indigo-400 rounded-md">
+                    <span className={`text-[10px] font-bold px-1 py-0.2 rounded-md ${
+                      darkMode ? 'bg-indigo-500/20 text-indigo-400' : 'bg-[#EDE9FF] text-[#5B4CF5]'
+                    }`}>
                       LVL {user.level}
                     </span>
                     <span className="text-[10px] text-amber-400 flex items-center gap-0.5 font-medium">
@@ -144,11 +156,11 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
 
               {/* Level XP Bar */}
               <div className="space-y-1">
-                <div className="flex justify-between text-[9px] text-gray-400">
+                <div className="flex justify-between text-[9px] text-[#8B87A8]">
                   <span>XP: {user.xp % 500} / 500</span>
                   <span>Progress</span>
                 </div>
-                <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                <div className={`w-full h-1.5 rounded-full overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-[#E2DFFF]'}`}>
                   <div
                     className="h-full bg-gradient-to-r from-brand-indigo to-brand-violet rounded-full transition-all duration-500"
                     style={{ width: `${((user.xp % 500) / 500) * 100}%` }}
@@ -162,15 +174,19 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
           <div className="flex items-center justify-between gap-2 px-2 text-sm">
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-gray-200 transition-colors"
+              className={`p-2 rounded-lg transition-colors ${
+                darkMode ? 'hover:bg-white/5 text-gray-400 hover:text-gray-200' : 'hover:bg-[#F0EFFF] text-[#4A4568] hover:text-[#1A1635]'
+              }`}
               title="Toggle Theme"
             >
-              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#5B4CF5]" />}
             </button>
 
             <button
               onClick={logout}
-              className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all text-xs"
+              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all text-xs ${
+                darkMode ? 'text-gray-500 hover:text-red-400 hover:bg-red-500/10' : 'text-[#8B87A8] hover:text-red-600 hover:bg-red-50'
+              }`}
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Log out</span>
@@ -217,12 +233,16 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
                       onClick={() => navigate(item.id)}
                       className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
                         isActive
-                          ? 'bg-gradient-to-r from-brand-indigo/25 to-brand-violet/10 text-indigo-300 font-medium'
-                          : 'hover:bg-white/5 text-gray-400 hover:text-gray-200'
+                          ? (darkMode
+                              ? 'bg-gradient-to-r from-brand-indigo/25 to-brand-violet/10 text-indigo-300 font-medium'
+                              : 'bg-[#EDE9FF] text-[#5B4CF5] font-semibold')
+                          : (darkMode
+                              ? 'hover:bg-white/5 text-gray-400 hover:text-gray-200'
+                              : 'hover:bg-[#F0EFFF] text-[#4A4568] hover:text-[#1A1635]')
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-gray-500'}`} />
+                        <Icon className={`w-4 h-4 ${isActive ? (darkMode ? 'text-indigo-400' : 'text-[#5B4CF5]') : 'text-[#8B87A8]'}`} />
                         <span>{item.label}</span>
                       </div>
                       {item.alertCount ? (
@@ -237,23 +257,23 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
             </div>
             {/* Bottom user card in drawer */}
             {user && (
-              <div className="pt-4 border-t border-white/5 space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5">
-                  <img src={user.photoURL} alt={user.displayName} className="w-9 h-9 rounded-full border border-indigo-400/40" />
-                  <div>
-                    <p className="text-xs font-semibold text-gray-200">{user.displayName}</p>
-                    <p className="text-[10px] text-indigo-400">LVL {user.level} · 🔥 {user.streak}d</p>
-                  </div>
-                </div>
-                <div className="flex justify-between px-1">
-                  <button onClick={toggleDarkMode} className="p-2 rounded-lg text-gray-400 hover:text-amber-400">
-                    {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                  </button>
-                  <button onClick={logout} className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-400">
-                    <LogOut className="w-3.5 h-3.5" /> Log out
-                  </button>
-                </div>
-              </div>
+               <div className={`pt-4 border-t space-y-3 ${darkMode ? 'border-white/5' : 'border-[#E2DFFF]'}`}>
+                 <div className={`flex items-center gap-3 p-3 rounded-xl ${darkMode ? 'bg-white/5' : 'bg-[#F8F7FF]'}`}>
+                   <img src={user.photoURL} alt={user.displayName} className="w-9 h-9 rounded-full border border-indigo-400/40" />
+                   <div>
+                     <p className={`text-xs font-semibold ${darkMode ? 'text-gray-200' : 'text-[#1A1635]'}`}>{user.displayName}</p>
+                     <p className="text-[10px] text-indigo-400">LVL {user.level} · 🔥 {user.streak}d</p>
+                   </div>
+                 </div>
+                 <div className="flex justify-between px-1">
+                   <button onClick={toggleDarkMode} className={`p-2 rounded-lg transition-colors ${darkMode ? 'text-gray-400 hover:text-amber-400' : 'text-[#8B87A8] hover:text-[#5B4CF5]'}`}>
+                     {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                   </button>
+                   <button onClick={logout} className={`flex items-center gap-1.5 text-xs transition-colors ${darkMode ? 'text-gray-500 hover:text-red-400' : 'text-[#8B87A8] hover:text-red-600'}`}>
+                     <LogOut className="w-3.5 h-3.5" /> Log out
+                   </button>
+                 </div>
+               </div>
             )}
           </div>
         </div>
@@ -276,7 +296,7 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h2 className="text-sm font-semibold capitalize text-gray-400">
+            <h2 className={`text-sm font-semibold capitalize ${darkMode ? 'text-gray-400' : 'text-[#8B87A8]'}`}>
               Workspace / {activePage}
             </h2>
           </div>
@@ -306,13 +326,15 @@ export default function Shell({ children, activePage, setActivePage }: ShellProp
               key={item.id}
               onClick={() => navigate(item.id)}
               className={`relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
-                isActive ? 'text-indigo-400' : 'text-gray-500 hover:text-gray-300'
+                isActive
+                  ? (darkMode ? 'text-indigo-400' : 'text-[#5B4CF5]')
+                  : (darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-[#8B87A8] hover:text-[#4A4568]')
               }`}
             >
               {isActive && (
-                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-indigo-400 rounded-full" />
+                <span className={`absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full ${darkMode ? 'bg-indigo-400' : 'bg-[#5B4CF5]'}`} />
               )}
-              <Icon className={`w-5 h-5 ${isActive ? 'text-indigo-400' : ''}`} />
+              <Icon className="w-5 h-5" />
               <span className="text-[9px] font-semibold">{item.label}</span>
               {item.alertCount ? (
                 <span className="absolute top-1 right-1.5 w-4 h-4 flex items-center justify-center text-[8px] font-bold rounded-full bg-red-500 text-white">
