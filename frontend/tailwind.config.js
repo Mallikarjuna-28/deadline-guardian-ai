@@ -12,6 +12,8 @@ export default {
           DEFAULT: '#5B4CF5',
           hover:   '#4A3DE0',
           light:   '#EDE9FF',
+          indigo:  '#5B4CF5',
+          violet:  '#7C6FF7',
           50:      '#F5F3FF',
           100:     '#EDE9FF',
           200:     '#DDD6FE',
