@@ -1,16 +1,27 @@
 # ⚡ Deadline Guardian AI
 
-> **Never miss a deadline again.** Your autonomous AI productivity agent — powered by Gemini 2.0 Flash.
+> **Never miss a deadline again.** Your autonomous AI productivity agent — powered by Gemini 1.5 Flash.
 
 🏆 **Built for Google Hackathon 2026** | [🌐 Live Demo](https://deadline-guardian-ai-3965b.web.app)
 
 ---
 
+## 🔑 JUDGES QUICK-START GUIDE
+To review this project without undergoing Google Account verification warnings or restricted test-user blocks:
+
+1. Open the **[Live Demo Website](https://deadline-guardian-ai-3965b.web.app)**
+2. Click **"Get Started"** or **"Launch App"** to navigate to the Login screen.
+3. Scroll to the bottom of the login card under **"Developer Tools"**.
+4. Click the **`Bypass with Dev Account`** button.
+5. **Boom! In exactly 1-click**, you are instantly authenticated into a pre-configured profile containing active mock tasks, habits, and progress.
+
+---
+
 ## 🎯 The Problem
 
-- **87%** of students miss at least one critical deadline per semester
-- Professionals lose **2.1 hours/week** to deadline anxiety and reactive scrambling
-- **73%** say reminder apps fail them — they remind but never **help**
+- **87%** of students miss at least one critical deadline per semester.
+- Professionals lose **2.1 hours/week** to deadline anxiety and reactive scrambling.
+- **73%** say reminder apps fail them — they remind but never **help**.
 
 **Existing tools are reactive. Deadline Guardian AI is autonomous.**
 
@@ -24,7 +35,7 @@
 
 | Feature | Why It Matters |
 |---|---|
-| 🧠 **Gemini 2.0 Flash** with 20 function-calling tools | Real autonomous agent — not a chatbot |
+| 🧠 **Gemini 1.5 Flash** with 20 function-calling tools | Real autonomous agent — not just a chatbot |
 | 📷 **Gemini Vision Photo Scanner** | Photograph a handwritten list → AI extracts all tasks |
 | ✅ **Approve/Reject action flow** | Agent proposes changes, you decide — transparent autonomy |
 | 🔮 **Deadline Time Travel** | Simulate 3 futures: current pace, AI-optimized, maximum effort |
@@ -37,12 +48,44 @@
 
 ---
 
+## 🏗 System Architecture
+
+```mermaid
+graph TD
+    User([User Browser])
+    
+    subgraph Google Cloud Platform & Firebase Hosting
+        FH[Firebase Hosting - Static Frontend]
+        FAuth[Firebase Auth - User Sessions]
+        FDB[(Firestore NoSQL Database)]
+    end
+    
+    subgraph Serverless Backend
+        CR[Cloud Run NodeJS Service]
+    end
+    
+    subgraph External Google APIs
+        Gemini[Google AI Studio - Gemini 1.5 API]
+        GCal[Google Calendar Sync API]
+    end
+
+    User -->|Access Web App| FH
+    User -->|Authenticate| FAuth
+    User -->|Stream chat SSE / NLP commands| CR
+    CR -->|Read/Write User Data| FDB
+    CR -->|Generate dynamic replies & tool calls| Gemini
+    CR -->|Sync deadlines silently| GCal
+    User -->|Direct DB read/write updates| FDB
+```
+
+---
+
 ## 🏗 Google Technologies Used
 
 | Service | How It's Used |
 |---|---|
-| **Gemini 2.0 Flash** | AI agent brain — NLP parsing, risk scoring, planning, 20 function-calling tools |
-| **Gemini 2.0 Flash Vision** | Multimodal photo → task extraction from handwritten lists |
+| **Gemini 1.5 Flash** | AI agent brain — NLP parsing, risk scoring, planning, 20 function-calling tools |
+| **Gemini 1.5 Flash Vision** | Multimodal photo → task extraction from handwritten lists |
 | **Firebase Authentication** | Google Sign-In + Email/Password auth |
 | **Firebase Firestore** | Primary real-time database for all user data |
 | **Firebase Storage** | File attachments on tasks |
@@ -64,7 +107,7 @@
 **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS + Framer Motion  
 **Backend:** Node.js + Express + TypeScript  
 **Database:** Firebase Firestore + in-memory fallback  
-**AI:** Gemini 2.0 Flash (function calling + vision + streaming SSE)  
+**AI:** Gemini 1.5 Flash (function calling + vision + streaming SSE)  
 **Deployment:** Docker + Google Cloud Run + Firebase Hosting  
 
 ---
@@ -89,20 +132,6 @@ cp .env.example .env.local
 npm install && npm run dev
 ```
 
-## ⚙️ Environment Setup
-
-1. **Firebase**: Create project at [console.firebase.google.com](https://console.firebase.google.com)
-   - Enable Auth (Google + Email), Firestore, Storage
-   - Download service account JSON for backend
-
-2. **Gemini API Key**: Get free key at [aistudio.google.com](https://aistudio.google.com)
-
-3. **Google Calendar API**: Enable at [console.cloud.google.com](https://console.cloud.google.com)
-
-4. Fill `.env.local` files (see `.env.example`)
-
-5. **Deploy**: `gcloud builds submit --config cloudbuild.yaml`
-
 ---
 
 ## 🤖 AI Agent — 20 Function-Calling Tools
@@ -119,7 +148,7 @@ create_project       compute_deadline_risk
 
 ---
 
-## 📁 Architecture
+## 📁 Directory Structure
 
 ```
 deadline-guardian-ai/
@@ -140,16 +169,6 @@ deadline-guardian-ai/
 ├── docker-compose.yml
 └── cloudbuild.yaml         # GCP CI/CD pipeline
 ```
-
----
-
-## 📸 Screenshots
-
-> Dashboard with AI Morning Brief and Risk Radar  
-> AI Agent with reasoning chain and approve/reject flow  
-> Gemini Vision photo scanner extracting tasks from handwritten list  
-> Time Travel — 3 simulated deadline futures  
-> Focus Mode with Pomodoro timer  
 
 ---
 
